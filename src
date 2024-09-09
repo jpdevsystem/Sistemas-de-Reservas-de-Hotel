@@ -1,0 +1,68 @@
+CREATE DATABASE HotelManagementSystem;
+USE HotelManagementSystem;
+CREATE TABLE Hospedes (
+    id_hospede INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    telefone VARCHAR(15),
+    email VARCHAR(100)
+);
+CREATE TABLE Quartos (
+    id_quarto INT AUTO_INCREMENT PRIMARY KEY,
+    numero INT,
+    tipo VARCHAR(50),
+    preco DECIMAL(10, 2)
+);
+CREATE TABLE Reservas (
+    id_reserva INT AUTO_INCREMENT PRIMARY KEY,
+    id_hospede INT,
+    id_quarto INT,
+    data_checkin DATE,
+    data_checkout DATE,
+    FOREIGN KEY (id_hospede) REFERENCES Hospedes(id_hospede),
+    FOREIGN KEY (id_quarto) REFERENCES Quartos(id_quarto)
+);
+INSERT INTO Hospedes (nome, telefone, email) VALUES
+('João Silva', '123456789', 'joao@example.com'),
+('Maria Santos', '987654321', 'maria@example.com'),
+('Carlos Oliveira', '564738291', 'carlos@example.com'),
+('Ana Costa', '112233445', 'ana@example.com'),
+('Pedro Souza', '998877665', 'pedro@example.com');
+INSERT INTO Quartos (numero, tipo, preco) VALUES
+(101, 'Simples', 150.00),
+(102, 'Duplo', 250.00),
+(103, 'Suite', 400.00),
+(104, 'Luxo', 600.00),
+(105, 'Simples', 150.00),
+(106, 'Duplo', 250.00),
+(107, 'Suite', 400.00),
+(108, 'Luxo', 600.00),
+(109, 'Simples', 150.00),
+(110, 'Duplo', 250.00);
+INSERT INTO Reservas (id_hospede, id_quarto, data_checkin, data_checkout) 
+VALUES
+(1, 1, '2024-09-01', '2024-09-05'),
+(2, 2, '2024-09-02', '2024-09-06'),
+(3, 3, '2024-09-03', '2024-09-07'),
+(4, 4, '2024-09-04', '2024-09-08'),
+(5, 5, '2024-09-05', '2024-09-09');
+SELECT h.nome, h.telefone, h.email, r.data_checkin, r.data_checkout, q.numero, q.tipo
+FROM Hospedes h
+JOIN Reservas r ON h.id_hospede = r.id_hospede
+JOIN Quartos q ON r.id_quarto = q.id_quarto;
+SELECT q.numero, q.tipo, q.preco
+FROM Quartos q
+WHERE q.id_quarto NOT IN (
+    SELECT id_quarto 
+    FROM Reservas 
+    WHERE ('2024-09-03' BETWEEN data_checkin AND data_checkout) 
+       OR ('2024-09-07' BETWEEN data_checkin AND data_checkout)
+);
+UPDATE Hospedes 
+SET telefone = '123123123', email = 'joao_novo@example.com' 
+WHERE id_hospede = 1;
+UPDATE Quartos 
+SET preco = 180.00 
+WHERE id_quarto = 101;
+DELETE FROM Reservas WHERE id_reserva = 1;
+DELETE FROM Reservas WHERE id_hospede = 2;
+DELETE FROM Hospedes WHERE id_hospede = 2;
