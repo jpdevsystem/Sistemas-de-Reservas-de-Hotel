@@ -1,0 +1,25 @@
+# Banco de Dados local e arquivos sensíveis
+*.sql
+*.db
+*.sqlite
+
+# Logs e temporários
+*.log
+*.tmp
+*.bak
+
+# Arquivos de configurações específicas do ambiente
+.DS_Store
+.vscode/
+.idea/
+
+# Arquivos binários
+*.exe
+*.out
+*.class
+*.o
+
+# Arquivos de compilação
+node_modules/
+dist/
+build/
